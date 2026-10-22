@@ -1,0 +1,717 @@
+{
+  "planId": "PLAN-SAUCEDEMO-001",
+  "title": "SauceDemo observed behavior and accessibility test plan",
+  "status": "approved",
+  "approval": {
+    "approver": "Project Owner",
+    "approvedAt": "2026-10-22T03:59:12.038Z"
+  },
+  "requirements": [
+    {
+      "id": "REQ-SD-001",
+      "description": "Provisional observed behavior: supplied public test-account listings and named login controls are available; submitting standard_user without a password displays the observed password-required alert."
+    },
+    {
+      "id": "REQ-SD-002",
+      "description": "Provisional observed behavior: blank login submission displays the observed username-required alert."
+    },
+    {
+      "id": "REQ-SD-003",
+      "description": "Provisional observed behavior: invalid credentials display the observed mismatch alert."
+    },
+    {
+      "id": "REQ-SD-004",
+      "description": "Provisional observed behavior: locked_out_user displays the observed locked-out alert."
+    },
+    {
+      "id": "REQ-SD-005",
+      "description": "Provisional observed behavior: standard_user sees six inventory products and the observed sort choices and orderings."
+    },
+    {
+      "id": "REQ-SD-006",
+      "description": "Provisional observed behavior: inventory detail controls and Backpack detail display the supplied observed content."
+    },
+    {
+      "id": "REQ-SD-007",
+      "description": "Provisional observed behavior: adding/removing Backpack updates its control and cart accessible name."
+    },
+    {
+      "id": "REQ-SD-008",
+      "description": "Provisional observed behavior: cart shows the selected item and the supplied controls."
+    },
+    {
+      "id": "REQ-SD-009",
+      "description": "Provisional observed behavior: checkout information form, individually observed missing First Name, Last Name, and Postal Code alerts, and supplied valid-data route transition."
+    },
+    {
+      "id": "REQ-SD-010",
+      "description": "Provisional observed behavior: checkout overview displays supplied item, payment, shipping, and totals."
+    },
+    {
+      "id": "REQ-SD-011",
+      "description": "Provisional observed behavior: Finish displays the supplied completion copy and empty cart."
+    },
+    {
+      "id": "REQ-SD-012",
+      "description": "Provisional observed behavior: menu/footer names, About URL, and Logout return route are as supplied."
+    },
+    {
+      "id": "REQ-SD-013",
+      "description": "Project test scope: automated axe-core scans cover login, inventory, cart, and checkout; manual keyboard and screen-reader reviews are documented separately. No scan or manual review result is claimed."
+    }
+  ],
+  "scope": "Use verified SauceDemo observations as provisional acceptance criteria for this demo automation project, not formal product-owner guarantees. Cover login, inventory visibility/sorting, Backpack details, cart, checkout, menu/logout navigation, automated axe-core scans on login/inventory/cart/checkout, and separately documented manual keyboard/screen-reader checks. No accessibility scan or manual conformance result is claimed. API behavior, browser/OS matrix, non-Backpack detail variations, and other unobserved validation outcomes are out of scope.",
+  "environment": "Named Playwright environment: PLAYWRIGHT_ENV=saucedemo, base URL https://www.saucedemo.com/. Browser build/version is externally managed and not observed. Each Playwright test must use its own default isolated browser context/page, sign in and establish its own preconditions, and must not reuse storageState or cart state from another test. Cart scenarios sign in as standard_user, add only their required item, and verify the expected cart state. When a cart must begin empty, use the observed inventory menu Reset App State action and assert the accessible cart name is Cart, empty before arranging scenario data. Supplied demo credentials are standard_user / secret_sauce and locked_out_user / secret_sauce; checkout sample data is Ada / Lovelace / 12345. Evidence source: integrated browser page and browser interactions; configured Playwright MCP was unavailable and was not used. No axe scan was run.",
+  "projectDecisions": [
+    {
+      "id": "DEC-SD-001",
+      "decision": "For this demo automation project, the verified browser observations recorded in this plan are provisional acceptance oracles. They are not represented as formal SauceDemo business requirements or guarantees across app releases.",
+      "basis": "Explicit project-scope decision supplied by the requester."
+    },
+    {
+      "id": "DEC-SD-002",
+      "decision": "Plan automated axe-core scans for login, inventory, cart, checkout information, checkout overview, and checkout completion. Record axe violations by rule, impact, target, and route; do not claim zero violations or WCAG conformance before scans are run and an acceptance threshold is approved.",
+      "basis": "Explicit accessibility scope supplied by the requester."
+    },
+    {
+      "id": "DEC-SD-003",
+      "decision": "Document manual keyboard and screen-reader checks separately from axe automation; manual review results must identify the browser and assistive technology actually exercised.",
+      "basis": "Explicit accessibility scope supplied by the requester."
+    },
+    {
+      "id": "DEC-SD-004",
+      "decision": "Use isolated Playwright browser contexts per test with independent login and precondition setup. For cart scenarios, reset through the observed Reset App State menu action, assert Cart, empty, then add only scenario-required products. Do not share authentication storage or depend on another test's cart.",
+      "basis": "Project test-isolation policy; the Reset App State action was observed to clear a non-empty cart."
+    },
+    {
+      "id": "DEC-SD-005",
+      "decision": "Preserve all 20 original scenario IDs and add two separate checkout cases for the newly observed missing Last Name and missing Postal Code errors, bringing the draft to 22 cases.",
+      "basis": "Browser evidence verified two distinct validation responses that were not represented by the original 20 cases."
+    }
+  ],
+  "resolvedBlockers": [
+    {
+      "id": "login-username-only",
+      "resolution": "Verified in the integrated browser: standard_user with Password left blank displays the alert Epic sadface: Password is required.",
+      "evidence": "Observed browser interaction on the live login form; recorded in test-plans/inspections/saucedemo.json."
+    },
+    {
+      "id": "checkout-required-fields",
+      "resolution": "Verified each missing-field validation in the integrated browser: blank First Name displays Error: First Name is required; after supplying Ada, blank Last Name displays Error: Last Name is required; after supplying Lovelace, blank Zip/Postal Code displays Error: Postal Code is required.",
+      "evidence": "Observed sequential field-isolation checks on checkout information; recorded in test-plans/inspections/saucedemo.json."
+    },
+    {
+      "id": "acceptance-basis",
+      "resolution": "Requester explicitly accepted observed SauceDemo behavior as provisional acceptance criteria for this demo automation project; this does not claim formal SauceDemo product-owner approval.",
+      "evidence": "Explicit project decision in the current request."
+    },
+    {
+      "id": "accessibility-scope",
+      "resolution": "Requester specified axe-core scans for login, inventory, cart, and checkout, with manual keyboard and screen-reader checks documented separately. No scan or manual review has been performed.",
+      "evidence": "Explicit project decision in the current request."
+    },
+    {
+      "id": "environment-isolation",
+      "resolution": "Base URL is https://www.saucedemo.com/. The plan requires fresh Playwright contexts, independent test setup, and a verified Reset App State cart reset before cart scenarios.",
+      "evidence": "Requester-specified target URL and isolation policy; cart reset behavior observed in the integrated browser."
+    }
+  ],
+  "approvalRequest": "Review the provisional acceptance oracles, explicit accessibility and isolation decisions, observed validation messages, and remaining non-blocking questions. Approval is not recorded: status remains draft and approver/approvedAt are null. Generation remains gated until a human explicitly runs the plan approval command.",
+  "assumptions": [
+    "REQ-SD IDs map to verified observations or the explicit project accessibility scope in requirements/saucedemo-requirements.md. No Jira story or formal SauceDemo acceptance criteria were supplied.",
+    "Only the supplied public demo credentials and sample checkout data are in scope; do not use real personal or payment information.",
+    "Unobserved behavior remains excluded or explicitly marked as a non-blocking owner question; no expected result is inferred.",
+    "All SauceDemo automation entries remain planning-only. No SauceDemo tests have been generated."
+  ],
+  "openQuestions": [
+    {
+      "question": "What additional policy should apply to username/password combinations other than blank submission, username-only, invalid credentials, and the locked-out account already observed?",
+      "impact": "Not covered by this provisional demo plan; add scenarios only after the behavior is observed or an explicit expected result is supplied.",
+      "owner": "Project owner",
+      "blocking": false
+    },
+    {
+      "question": "Are the observed ordering of equal-priced products and destinations/actions for All Items, Dynamic Catalog, Reset App State, and footer links contractual?",
+      "impact": "The plan checks only supplied labels and explicitly observed destinations; deeper interaction assertions require a decision.",
+      "owner": "Product owner",
+      "blocking": false
+    },
+    {
+      "question": "What accessibility pass/fail threshold and screen-reader/browser matrix should apply to findings?",
+      "impact": "The draft defines scan and manual-review scope only. Record findings without claiming conformance until the owner sets thresholds and combinations.",
+      "owner": "Accessibility owner",
+      "blocking": false
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "SD-LOGIN-001",
+      "requirementId": "REQ-SD-001",
+      "description": "Sign in with the supplied standard_user credentials and reach the observed inventory page.",
+      "priority": "P1",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "The owner-approved SauceDemo site is available.",
+        "The supplied standard_user / secret_sauce test account is authorized and the browser is signed out."
+      ],
+      "steps": [
+        "Open the login page.",
+        "Verify the public accepted-user listing contains standard_user and locked_out_user and the public password listing says secret_sauce.",
+        "Verify the Login form exposes Username and Password textboxes and a Login button.",
+        "Enter standard_user and secret_sauce, then activate Login."
+      ],
+      "expectedResults": [
+        "The user reaches /inventory.html.",
+        "The page heading is Products and six products are displayed."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI flow using accessible form controls and observable route/heading/product count.",
+        "rationale": "No SauceDemo generator kind exists; implement only after plan approval and generator support."
+      }
+    },
+    {
+      "id": "SD-LOGIN-002",
+      "requirementId": "REQ-SD-003",
+      "description": "Reject the supplied invalid username/password combination with the observed alert.",
+      "priority": "P1",
+      "type": "ui-negative",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "The owner-approved SauceDemo site is available and the browser is signed out."
+      ],
+      "steps": [
+        "Open the login page.",
+        "Enter an invalid username and invalid password.",
+        "Activate Login."
+      ],
+      "expectedResults": [
+        "The page displays Epic sadface: Username and password do not match any user in this service."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI negative path; assert the exact observed alert.",
+        "rationale": "No SauceDemo generator kind exists; implement only after plan approval and generator support."
+      }
+    },
+    {
+      "id": "SD-LOGIN-003",
+      "requirementId": "REQ-SD-004",
+      "description": "Show the observed locked-out alert for locked_out_user.",
+      "priority": "P1",
+      "type": "ui-negative",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "The owner-approved SauceDemo site is available and the browser is signed out."
+      ],
+      "steps": [
+        "Open the login page.",
+        "Enter locked_out_user and secret_sauce.",
+        "Activate Login."
+      ],
+      "expectedResults": [
+        "The page displays Epic sadface: Sorry, this user has been locked out."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI negative path; assert the exact observed alert.",
+        "rationale": "No SauceDemo generator kind exists; implement only after plan approval and generator support."
+      }
+    },
+    {
+      "id": "SD-LOGIN-004",
+      "requirementId": "REQ-SD-002",
+      "description": "Submit the login form blank and observe the supplied username-required alert.",
+      "priority": "P1",
+      "type": "ui-negative",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "The owner-approved SauceDemo site is available and the browser is signed out."
+      ],
+      "steps": [
+        "Open the login page.",
+        "Leave Username and Password empty.",
+        "Activate Login."
+      ],
+      "expectedResults": [
+        "The page displays Epic sadface: Username is required."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI validation path; assert the exact observed alert.",
+        "rationale": "No SauceDemo generator kind exists; implement only after plan approval and generator support."
+      }
+    },
+    {
+      "id": "SD-LOGIN-005",
+      "requirementId": "REQ-SD-001",
+      "description": "Submitting standard_user without a password displays the observed password-required alert.",
+      "priority": "P2",
+      "type": "ui-boundary",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "The browser is signed out on https://www.saucedemo.com/."
+      ],
+      "steps": [
+        "Enter standard_user while leaving Password empty.",
+        "Activate Login."
+      ],
+      "expectedResults": [
+        "The page displays Epic sadface: Password is required."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI boundary validation using the observed alert.",
+        "rationale": "Verified in the integrated browser for standard_user with Password empty."
+      }
+    },
+    {
+      "id": "SD-INV-001",
+      "requirementId": "REQ-SD-005",
+      "description": "Verify the signed-in inventory exposes six products and product-specific name/detail and add controls.",
+      "priority": "P1",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce."
+      ],
+      "steps": [
+        "Open /inventory.html.",
+        "Verify the Products heading and six products.",
+        "For each displayed product, verify its product-name button is named View details for <name> and a product-specific Add to cart control is present."
+      ],
+      "expectedResults": [
+        "The inventory heading is Products and six products are visible.",
+        "Each product exposes the supplied product-name button naming pattern and product-specific Add to cart control."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI inventory inspection through accessible names and visible product count.",
+        "rationale": "No SauceDemo generator kind exists; implementation requires approved inspection evidence."
+      }
+    },
+    {
+      "id": "SD-INV-002",
+      "requirementId": "REQ-SD-005",
+      "description": "Verify Name (A to Z) and Name (Z to A) produce the supplied product orders.",
+      "priority": "P2",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce and viewing inventory."
+      ],
+      "steps": [
+        "Select Name (A to Z) from the Sort products combobox.",
+        "Record the visible product order.",
+        "Select Name (Z to A) and record the visible product order."
+      ],
+      "expectedResults": [
+        "The combobox is named Sort products and includes Name (A to Z), Name (Z to A), Price (low to high), and Price (high to low).",
+        "A to Z order is Backpack, Bike Light, Bolt T-Shirt, Fleece Jacket, Onesie, Test.allTheThings() T-Shirt (Red).",
+        "Z to A order is the inverse: Test.allTheThings() T-Shirt (Red), Onesie, Fleece Jacket, Bolt T-Shirt, Bike Light, Backpack."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI sorting assertions against complete observed name sequences.",
+        "rationale": "No SauceDemo generator kind exists."
+      }
+    },
+    {
+      "id": "SD-INV-003",
+      "requirementId": "REQ-SD-005",
+      "description": "Verify both price sort directions against the supplied observed product and price sequences.",
+      "priority": "P2",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce and viewing inventory."
+      ],
+      "steps": [
+        "Select Price (low to high) from Sort products.",
+        "Record product names and displayed prices in order.",
+        "Select Price (high to low) and record product names in order."
+      ],
+      "expectedResults": [
+        "Low to high is Onesie ($7.99), Bike Light ($9.99), Bolt T-Shirt ($15.99), Test.allTheThings() T-Shirt (Red) ($15.99), Backpack ($29.99), Fleece Jacket ($49.99).",
+        "High to low names are Fleece Jacket, Backpack, Bolt T-Shirt, Test.allTheThings() T-Shirt (Red), Bike Light, Onesie.",
+        "The supplied observations establish the equal-price ordering only for low-to-high; high-to-low tie order is not asserted."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI sort assertions against supplied values; avoid asserting unspecified tie behavior in descending direction.",
+        "rationale": "No SauceDemo generator kind exists."
+      }
+    },
+    {
+      "id": "SD-DETAIL-001",
+      "requirementId": "REQ-SD-006",
+      "description": "Open Backpack details and verify the supplied detail route, image alternative, price, and controls.",
+      "priority": "P2",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce and viewing inventory."
+      ],
+      "steps": [
+        "Activate the Backpack product-name button using the observed View details for <name> naming pattern.",
+        "Inspect the resulting page."
+      ],
+      "expectedResults": [
+        "The route is /inventory-item.html?id=4.",
+        "The page shows image alt Sauce Labs Backpack, price $29.99, Add to cart, and Back to products."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI detail-page assertions using accessible names, image alternative text, and observed route.",
+        "rationale": "No SauceDemo generator kind exists."
+      }
+    },
+    {
+      "id": "SD-CART-001",
+      "requirementId": "REQ-SD-007",
+      "description": "Add Backpack and verify the observed button and cart-name state changes.",
+      "priority": "P1",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce with an empty cart."
+      ],
+      "steps": [
+        "On inventory, activate Backpack Add to cart.",
+        "Inspect the Backpack action and cart button accessible name."
+      ],
+      "expectedResults": [
+        "The Backpack action changes to Remove.",
+        "The cart button accessible name is Cart, 1 items."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI state transition assertions against control name and cart accessible name.",
+        "rationale": "No SauceDemo generator kind exists."
+      }
+    },
+    {
+      "id": "SD-CART-002",
+      "requirementId": "REQ-SD-007",
+      "description": "Remove Backpack and verify the observed empty-cart state.",
+      "priority": "P1",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce with Backpack in the cart."
+      ],
+      "steps": [
+        "Activate Backpack Remove.",
+        "Inspect the product action and cart button accessible name."
+      ],
+      "expectedResults": [
+        "The Backpack action returns to Add to cart.",
+        "The cart button accessible name is Cart, empty."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI state transition assertions against control name and cart accessible name.",
+        "rationale": "No SauceDemo generator kind exists."
+      }
+    },
+    {
+      "id": "SD-CART-003",
+      "requirementId": "REQ-SD-008",
+      "description": "Verify cart contents and available actions for the added Backpack.",
+      "priority": "P1",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce with Backpack added."
+      ],
+      "steps": [
+        "Open Cart.",
+        "Inspect the page heading, item row, quantity, and action buttons."
+      ],
+      "expectedResults": [
+        "The route is /cart.html and heading is Your Cart.",
+        "The cart shows QTY 1, the Backpack product description, and Remove.",
+        "Continue Shopping and Checkout buttons are available."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI cart-content and action assertions.",
+        "rationale": "No SauceDemo generator kind exists."
+      }
+    },
+    {
+      "id": "SD-CHECKOUT-001",
+      "requirementId": "REQ-SD-009",
+      "description": "Submit empty checkout information and verify the observed First Name error.",
+      "priority": "P1",
+      "type": "ui-negative",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce with Backpack in the cart."
+      ],
+      "steps": [
+        "Open Cart and activate Checkout.",
+        "Verify Checkout: Your Information, First Name, Last Name, Zip/Postal Code, Continue, and Cancel.",
+        "Leave all information fields empty and activate Continue."
+      ],
+      "expectedResults": [
+        "Checkout opens /checkout-step-one.html.",
+        "The page displays Error: First Name is required."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI required-information negative path; both fields remain empty.",
+        "rationale": "Error: First Name is required was directly observed."
+      }
+    },
+    {
+      "id": "SD-CHECKOUT-005",
+      "requirementId": "REQ-SD-009",
+      "description": "Submitting checkout with First Name present and Last Name missing displays the observed Last Name error.",
+      "priority": "P1",
+      "type": "ui-negative",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce with Backpack in the cart.",
+        "Checkout information is open and all fields are initially empty."
+      ],
+      "steps": [
+        "Enter Ada in First Name; leave Last Name and Zip/Postal Code empty.",
+        "Activate Continue."
+      ],
+      "expectedResults": [
+        "The page remains on /checkout-step-one.html.",
+        "The page displays Error: Last Name is required."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "Isolated UI required-field validation with First Name supplied.",
+        "rationale": "The exact Last Name error was observed in the integrated browser."
+      }
+    },
+    {
+      "id": "SD-CHECKOUT-006",
+      "requirementId": "REQ-SD-009",
+      "description": "Submitting checkout with first and last names present and postal code missing displays the observed Postal Code error.",
+      "priority": "P1",
+      "type": "ui-negative",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce with Backpack in the cart.",
+        "Checkout information is open and all fields are initially empty."
+      ],
+      "steps": [
+        "Enter Ada in First Name and Lovelace in Last Name; leave Zip/Postal Code empty.",
+        "Activate Continue."
+      ],
+      "expectedResults": [
+        "The page remains on /checkout-step-one.html.",
+        "The page displays Error: Postal Code is required."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "Isolated UI required-field validation with First Name and Last Name supplied.",
+        "rationale": "The exact Postal Code error was observed in the integrated browser."
+      }
+    },
+    {
+      "id": "SD-CHECKOUT-002",
+      "requirementId": "REQ-SD-009",
+      "description": "Submit the supplied checkout information and verify the observed route transition.",
+      "priority": "P1",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce with Backpack in the cart."
+      ],
+      "steps": [
+        "Open Checkout from the cart.",
+        "Enter Ada, Lovelace, and 12345 in First Name, Last Name, and Zip/Postal Code respectively.",
+        "Activate Continue."
+      ],
+      "expectedResults": [
+        "The browser reaches /checkout-step-two.html.",
+        "The page heading is Checkout: Overview."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI valid-information flow and route/heading assertion.",
+        "rationale": "No SauceDemo generator kind exists."
+      }
+    },
+    {
+      "id": "SD-CHECKOUT-003",
+      "requirementId": "REQ-SD-010",
+      "description": "Verify the supplied order overview line item, payment, shipping, and totals.",
+      "priority": "P1",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce with Backpack and supplied checkout information; viewing Checkout: Overview."
+      ],
+      "steps": [
+        "Inspect the overview item, payment, shipping, totals, and available buttons."
+      ],
+      "expectedResults": [
+        "The item is $29.99.",
+        "Payment is SauceCard #31337 and shipping is Free Pony Express Delivery!.",
+        "Item total is $29.99, Tax is $2.40, and Total is $32.39.",
+        "Finish and Cancel buttons are present."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI overview assertions for observed copy and monetary values.",
+        "rationale": "No SauceDemo generator kind exists."
+      }
+    },
+    {
+      "id": "SD-CHECKOUT-004",
+      "requirementId": "REQ-SD-011",
+      "description": "Finish the order and verify the observed completion page and empty cart.",
+      "priority": "P1",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "A Backpack order is on Checkout: Overview with the supplied checkout information."
+      ],
+      "steps": [
+        "Activate Finish.",
+        "Inspect completion headings, confirmation copy, cart state, and Back Home button."
+      ],
+      "expectedResults": [
+        "The route is /checkout-complete.html.",
+        "The page shows Checkout: Complete! and Thank you for your order!.",
+        "The copy is Your order has been dispatched, and will arrive just as fast as the pony can get there!.",
+        "The cart is empty and Back Home is available."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI completion flow assertions and cart-empty state check.",
+        "rationale": "No SauceDemo generator kind exists."
+      }
+    },
+    {
+      "id": "SD-NAV-001",
+      "requirementId": "REQ-SD-012",
+      "description": "Verify the observed menu and footer navigation labels and the About destination.",
+      "priority": "P2",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce and viewing an application page with its menu/footer."
+      ],
+      "steps": [
+        "Activate Open Menu.",
+        "Verify nav buttons All Items, Dynamic Catalog, Logout, Reset App State, and About.",
+        "Verify the About link destination is https://saucelabs.com/ without relying on an unobserved destination for other menu controls.",
+        "Inspect footer links."
+      ],
+      "expectedResults": [
+        "The named menu controls are present.",
+        "About points to https://saucelabs.com/.",
+        "Footer links X, Facebook, and LinkedIn are present."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI accessible-name and href assertions for supplied observations.",
+        "rationale": "No SauceDemo generator kind exists; menu action destinations other than About/Logout are not asserted."
+      }
+    },
+    {
+      "id": "SD-NAV-002",
+      "requirementId": "REQ-SD-012",
+      "description": "Log out from the menu and verify return to the login route.",
+      "priority": "P1",
+      "type": "ui-positive",
+      "status": "ready-for-owner-review",
+      "preconditions": [
+        "Signed in as standard_user / secret_sauce."
+      ],
+      "steps": [
+        "Open the menu.",
+        "Activate Logout."
+      ],
+      "expectedResults": [
+        "The browser returns to /."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "UI logout transition and route assertion.",
+        "rationale": "No SauceDemo generator kind exists."
+      }
+    },
+    {
+      "id": "SD-A11Y-001",
+      "requirementId": "REQ-SD-013",
+      "description": "Run and document automated axe-core scans on login, inventory, cart, and checkout states.",
+      "priority": "P2",
+      "type": "accessibility",
+      "status": "proposed-not-run",
+      "preconditions": [
+        "The named SauceDemo environment is available.",
+        "A signed-out login page and signed-in inventory, cart, checkout information, overview, and completion states can be reached using supplied demo data."
+      ],
+      "steps": [
+        "Run @axe-core/playwright on login, inventory, cart, checkout information, checkout overview, and completion states using WCAG 2.2 AA tags.",
+        "Record scan configuration, page/state, violations by rule/impact/target, and triage disposition."
+      ],
+      "expectedResults": [
+        "Automated findings are recorded by page and rule; no zero-violation outcome or WCAG conformance is claimed before the scans run.",
+        "No scan has been run yet; observed results and any agreed severity thresholds are documented separately."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "Separate axe-core scans on each planned page state; report findings without presuming a zero-violation oracle.",
+        "rationale": "The scan scope is an explicit project decision; no axe scan was run during browser exploration."
+      }
+    },
+    {
+      "id": "SD-A11Y-002",
+      "requirementId": "REQ-SD-013",
+      "description": "Propose manual keyboard, focus, and accessible-name review for login, inventory, cart, and checkout flows.",
+      "priority": "P2",
+      "type": "accessibility",
+      "status": "proposed-not-run",
+      "preconditions": [
+        "The browser and screen-reader combination used for manual review is recorded; this plan makes no unsupported coverage claim for untested combinations."
+      ],
+      "steps": [
+        "Manually operate the in-scope forms, sorting, product details, cart, and checkout controls using keyboard only.",
+        "Review focus visibility/order and meaningful accessible names for interactive controls.",
+        "Record tested combinations and findings; do not infer conformance from the browser snapshot."
+      ],
+      "expectedResults": [
+        "Keyboard and screen-reader observations are documented separately from axe results.",
+        "No conformance claim is made for combinations that were not exercised."
+      ],
+      "automation": {
+        "kind": "planned",
+        "phase": "C",
+        "approach": "Manual accessibility review, separate from axe automation.",
+        "rationale": "Keyboard/focus/name behavior and conformance were not established by the supplied snapshot."
+      }
+    }
+  ]
+}

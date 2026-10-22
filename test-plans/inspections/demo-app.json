@@ -1,0 +1,34 @@
+{
+  "source": "interactive-browser",
+  "url": "http://127.0.0.1:4173",
+  "pages": [
+    {
+      "path": "/",
+      "title": "Playwright AI demo",
+      "roles": [
+        {
+          "role": "textbox",
+          "name": "Your name"
+        },
+        {
+          "role": "button",
+          "name": "Show greeting"
+        },
+        {
+          "role": "status"
+        }
+      ]
+    }
+  ],
+  "api": [
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "status": 200,
+      "body": {
+        "status": "ok"
+      }
+    }
+  ],
+  "limitations": "Inspected using the available integrated browser page snapshot, not the configured Playwright MCP server because MCP tools were not exposed in this session."
+}

@@ -1,15 +1,77 @@
-# Demo application test plan
+# Demo application greeting and health checks
 
-**Status:** Draft example; not approved for production automation.
-**Scope:** Bootstrap-only UI, API, and accessibility smoke scenarios.
-**Approval:** None. These scenarios demonstrate ID traceability, not product coverage.
+**Plan ID:** PLAN-DEMO-001
+**Status:** DRAFT
+**Approval:** Not approved
 
-| ID | Priority | Type | Preconditions | Steps | Expected result |
-| --- | --- | --- | --- | --- | --- |
-| TP-DEMO-001 | P2 | UI positive | Demo app is available | Open home; enter `Ada`; submit | A polite status message reads `Hello, Ada!` |
-| TP-DEMO-002 | P2 | UI negative/boundary | Demo app is available | Open home; submit without a name | Required input blocks submission |
-| TP-DEMO-003 | P2 | API positive | Demo app is available | GET `/api/health` | HTTP 200 with `{"status":"ok"}` |
-| TP-DEMO-004 | P2 | Accessibility | Demo app is available | Scan home using axe WCAG 2.2 AA tags | No automated violations are reported |
+## Requirements
 
-This example has no linked business requirements and must not be mistaken for an
-approved enterprise acceptance suite.
+| Requirement ID | Description |
+| --- | --- |
+| REQ-DEMO-001 | A visitor can submit a name and receive a personalized greeting. |
+| REQ-DEMO-002 | The greeting form prevents submission when the required name is empty. |
+| REQ-DEMO-003 | The health endpoint returns a successful JSON status. |
+| REQ-DEMO-004 | The home page provides accessible controls and has no automated WCAG 2.2 AA violations. |
+
+## Test cases
+
+### TP-DEMO-001 — A visitor receives a personalized greeting after submitting a name.
+
+- **Requirement:** REQ-DEMO-001
+- **Priority:** P2
+- **Type:** ui-positive
+- **Automation:** ui-greeting
+- **Preconditions:**
+  - The demo application is available at the configured base URL.
+- **Steps:**
+  1. Open the home page.
+  2. Enter Ada in the Your name field.
+  3. Select Show greeting.
+- **Expected results:**
+  - The status message reads Hello, Ada!.
+
+### TP-DEMO-002 — The required name field blocks submitting an empty greeting form.
+
+- **Requirement:** REQ-DEMO-002
+- **Priority:** P2
+- **Type:** ui-negative
+- **Automation:** ui-required-field
+- **Preconditions:**
+  - The demo application is available at the configured base URL.
+- **Steps:**
+  1. Open the home page.
+  2. Submit the form without entering a name.
+- **Expected results:**
+  - The name field is required and remains invalid when empty.
+
+### TP-DEMO-003 — The health endpoint returns HTTP 200 and a healthy JSON response.
+
+- **Requirement:** REQ-DEMO-003
+- **Priority:** P2
+- **Type:** api-positive
+- **Automation:** api-json-get
+- **Preconditions:**
+  - The demo application is available at the configured base URL.
+- **Steps:**
+  1. Send GET /api/health.
+- **Expected results:**
+  - The response status is 200.
+  - The response JSON is {"status":"ok"}.
+
+### TP-DEMO-004 — The home page exposes accessible controls and has no automated WCAG 2.2 AA violations.
+
+- **Requirement:** REQ-DEMO-004
+- **Priority:** P2
+- **Type:** accessibility
+- **Automation:** accessibility-axe
+- **Preconditions:**
+  - The demo application is available at the configured base URL.
+- **Steps:**
+  1. Open the home page.
+  2. Scan the rendered page using axe WCAG 2.2 AA tags.
+- **Expected results:**
+  - The automated axe scan reports no violations.
+
+## Open questions
+
+None.

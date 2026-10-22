@@ -1,0 +1,186 @@
+{
+  "source": "interactive-browser",
+  "url": "https://www.saucedemo.com/",
+  "observedAt": "2026-10-22",
+  "pages": [
+    {
+      "path": "/",
+      "title": "Swag Labs",
+      "roles": [
+        { "role": "form", "name": "Login" },
+        { "role": "textbox", "name": "Username" },
+        { "role": "textbox", "name": "Password" },
+        { "role": "button", "name": "Login" },
+        { "role": "alert", "name": "Epic sadface: Username is required" }
+      ],
+      "dataTest": ["username", "password", "login-button"],
+      "observedOutcomes": [
+        "The public login page lists standard_user and locked_out_user among accepted usernames.",
+        "The public login page lists secret_sauce as the password for all users.",
+        "Submitting with both fields empty displays Epic sadface: Username is required.",
+        "Submitting standard_user with the password empty displays Epic sadface: Password is required.",
+        "invalid_user / wrong_password displays Epic sadface: Username and password do not match any user in this service.",
+        "locked_out_user / secret_sauce displays Epic sadface: Sorry, this user has been locked out."
+      ]
+    },
+    {
+      "path": "/inventory.html",
+      "title": "Swag Labs",
+      "roles": [
+        { "role": "heading", "name": "Products" },
+        { "role": "combobox", "name": "Sort products" },
+        { "role": "button", "name": "Open Menu" },
+        { "role": "button", "name": "Cart, empty" }
+      ],
+      "dataTest": [
+        "product-sort-container",
+        "inventory-list",
+        "inventory-item",
+        "inventory-item-name",
+        "inventory-item-price",
+        "item-4-title-link",
+        "add-to-cart-sauce-labs-backpack",
+        "shopping-cart-link",
+        "shopping-cart-badge",
+        "logout-sidebar-link"
+      ],
+      "productNamesAZ": [
+        "Sauce Labs Backpack",
+        "Sauce Labs Bike Light",
+        "Sauce Labs Bolt T-Shirt",
+        "Sauce Labs Fleece Jacket",
+        "Sauce Labs Onesie",
+        "Test.allTheThings() T-Shirt (Red)"
+      ],
+      "productNamesZA": [
+        "Test.allTheThings() T-Shirt (Red)",
+        "Sauce Labs Onesie",
+        "Sauce Labs Fleece Jacket",
+        "Sauce Labs Bolt T-Shirt",
+        "Sauce Labs Bike Light",
+        "Sauce Labs Backpack"
+      ],
+      "productPricesLowToHigh": [
+        ["Sauce Labs Onesie", "$7.99"],
+        ["Sauce Labs Bike Light", "$9.99"],
+        ["Sauce Labs Bolt T-Shirt", "$15.99"],
+        ["Test.allTheThings() T-Shirt (Red)", "$15.99"],
+        ["Sauce Labs Backpack", "$29.99"],
+        ["Sauce Labs Fleece Jacket", "$49.99"]
+      ],
+      "productNamesHighToLow": [
+        "Sauce Labs Fleece Jacket",
+        "Sauce Labs Backpack",
+        "Sauce Labs Bolt T-Shirt",
+        "Test.allTheThings() T-Shirt (Red)",
+        "Sauce Labs Bike Light",
+        "Sauce Labs Onesie"
+      ],
+      "observedOutcomes": [
+        "After adding the Backpack, the product control changes to Remove and the cart button is named Cart, 1 items.",
+        "After removing the Backpack, its control returns to Add to cart and the cart button is named Cart, empty."
+      ]
+    },
+    {
+      "path": "/inventory-item.html?id=4",
+      "title": "Swag Labs",
+      "roles": [
+        { "role": "button", "name": "Back to products" },
+        { "role": "img", "name": "Sauce Labs Backpack" },
+        { "role": "button", "name": "Add to cart" }
+      ],
+      "dataTest": ["item-4-img-link", "inventory-item-sauce-labs-backpack-img"],
+      "observedText": ["Sauce Labs Backpack", "$29.99"]
+    },
+    {
+      "path": "/cart.html",
+      "title": "Swag Labs",
+      "roles": [
+        { "role": "heading", "name": "Your Cart" },
+        { "role": "button", "name": "Cart, 1 items" },
+        { "role": "button", "name": "View details for Sauce Labs Backpack" },
+        { "role": "button", "name": "Remove" },
+        { "role": "button", "name": "Continue Shopping" },
+        { "role": "button", "name": "Checkout" }
+      ],
+      "dataTest": [
+        "cart-contents-container",
+        "cart-list",
+        "item-quantity",
+        "item-4-title-link",
+        "remove-sauce-labs-backpack",
+        "continue-shopping",
+        "checkout"
+      ],
+      "observedText": ["1", "Sauce Labs Backpack", "$29.99"]
+    },
+    {
+      "path": "/checkout-step-one.html",
+      "title": "Swag Labs",
+      "roles": [
+        { "role": "heading", "name": "Checkout: Your Information" },
+        { "role": "textbox", "name": "First Name" },
+        { "role": "textbox", "name": "Last Name" },
+        { "role": "textbox", "name": "Zip/Postal Code" },
+        { "role": "button", "name": "Continue" },
+        { "role": "button", "name": "Cancel" },
+        { "role": "alert", "name": "Error: First Name is required" }
+      ],
+      "dataTest": ["firstName", "lastName", "postalCode", "continue", "cancel"],
+      "observedValidationOutcomes": [
+        {
+          "setup": "Leave First Name, Last Name, and Zip/Postal Code blank and activate Continue.",
+          "alert": "Error: First Name is required"
+        },
+        {
+          "setup": "Enter Ada in First Name; leave Last Name and Zip/Postal Code blank; activate Continue.",
+          "alert": "Error: Last Name is required"
+        },
+        {
+          "setup": "Enter Ada and Lovelace; leave Zip/Postal Code blank; activate Continue.",
+          "alert": "Error: Postal Code is required"
+        }
+      ]
+    },
+    {
+      "path": "/checkout-step-two.html",
+      "title": "Swag Labs",
+      "roles": [
+        { "role": "heading", "name": "Checkout: Overview" },
+        { "role": "button", "name": "Finish" },
+        { "role": "button", "name": "Cancel" }
+      ],
+      "observedText": [
+        "SauceCard #31337",
+        "Free Pony Express Delivery!",
+        "Item total: $29.99",
+        "Tax: $2.40",
+        "Total: $32.39"
+      ]
+    },
+    {
+      "path": "/checkout-complete.html",
+      "title": "Swag Labs",
+      "roles": [
+        { "role": "heading", "name": "Checkout: Complete!" },
+        { "role": "heading", "name": "Thank you for your order!" },
+        { "role": "button", "name": "Back Home" },
+        { "role": "button", "name": "Generate PDF order" },
+        { "role": "button", "name": "Cart, empty" }
+      ]
+    }
+  ],
+  "api": [],
+  "projectDecisions": [
+    "Use verified browser observations as provisional acceptance criteria for this demo automation project only.",
+    "Use fresh Playwright browser contexts per test, log in and establish preconditions independently, and do not share authentication storage or cart state.",
+    "For cart setup, invoke the observed Reset App State action, assert Cart, empty, then add only scenario-required products.",
+    "Scope automated axe-core scans to login, inventory, cart, checkout information, overview, and completion; document manual keyboard and screen-reader review separately.",
+    "Accessibility scan and manual review have not yet been run; no conformance result is implied."
+  ],
+  "limitations": [
+    "Evidence was collected using the integrated browser accessibility snapshot and browser interactions, not Playwright MCP; Playwright MCP tools were not exposed in this session.",
+    "No axe-core scan or manual WCAG conformance review was performed.",
+    "The observed login, inventory, cart, and checkout DOMs showed the listed data-test hooks; hooks were not exhaustively inventoried on every route."
+  ]
+}
