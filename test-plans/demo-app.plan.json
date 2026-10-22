@@ -1,0 +1,52 @@
+{
+  "planId": "PLAN-DEMO-001",
+  "title": "Demo application bootstrap scenarios",
+  "status": "draft",
+  "approval": {
+    "approver": null,
+    "approvedAt": null
+  },
+  "requirements": [],
+  "scenarios": [
+    {
+      "id": "TP-DEMO-001",
+      "title": "A visitor can receive a personalized greeting",
+      "type": "ui-positive",
+      "priority": "P2",
+      "preconditions": ["The demo application is available."],
+      "steps": ["Open the home page.", "Enter Ada in Your name.", "Select Show greeting."],
+      "expectedResults": ["The status message reads Hello, Ada!."],
+      "automationStatus": "example"
+    },
+    {
+      "id": "TP-DEMO-002",
+      "title": "The greeting form requires a name",
+      "type": "ui-negative-boundary",
+      "priority": "P2",
+      "preconditions": ["The demo application is available."],
+      "steps": ["Open the home page.", "Submit the form without a name."],
+      "expectedResults": ["The required input blocks submission."],
+      "automationStatus": "example"
+    },
+    {
+      "id": "TP-DEMO-003",
+      "title": "The health endpoint returns a successful status",
+      "type": "api-positive",
+      "priority": "P2",
+      "preconditions": ["The demo application is available."],
+      "steps": ["Send GET /api/health."],
+      "expectedResults": ["HTTP 200 and a JSON status of ok."],
+      "automationStatus": "example"
+    },
+    {
+      "id": "TP-DEMO-004",
+      "title": "The demo home page has no automated WCAG 2.2 AA violations",
+      "type": "accessibility",
+      "priority": "P2",
+      "preconditions": ["The demo application is available."],
+      "steps": ["Scan the home page with axe WCAG 2.2 AA tags."],
+      "expectedResults": ["No automated axe violations are returned."],
+      "automationStatus": "example"
+    }
+  ]
+}
