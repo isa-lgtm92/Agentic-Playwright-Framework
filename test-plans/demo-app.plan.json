@@ -1,52 +1,92 @@
 {
   "planId": "PLAN-DEMO-001",
-  "title": "Demo application bootstrap scenarios",
+  "title": "Demo application greeting and health checks",
   "status": "draft",
   "approval": {
     "approver": null,
     "approvedAt": null
   },
-  "requirements": [],
+  "requirements": [
+    {
+      "id": "REQ-DEMO-001",
+      "description": "A visitor can submit a name and receive a personalized greeting."
+    },
+    {
+      "id": "REQ-DEMO-002",
+      "description": "The greeting form prevents submission when the required name is empty."
+    },
+    {
+      "id": "REQ-DEMO-003",
+      "description": "The health endpoint returns a successful JSON status."
+    },
+    {
+      "id": "REQ-DEMO-004",
+      "description": "The home page provides accessible controls and has no automated WCAG 2.2 AA violations."
+    }
+  ],
+  "openQuestions": [],
   "scenarios": [
     {
       "id": "TP-DEMO-001",
-      "title": "A visitor can receive a personalized greeting",
-      "type": "ui-positive",
+      "requirementId": "REQ-DEMO-001",
+      "description": "A visitor receives a personalized greeting after submitting a name.",
       "priority": "P2",
-      "preconditions": ["The demo application is available."],
-      "steps": ["Open the home page.", "Enter Ada in Your name.", "Select Show greeting."],
+      "type": "ui-positive",
+      "preconditions": ["The demo application is available at the configured base URL."],
+      "steps": ["Open the home page.", "Enter Ada in the Your name field.", "Select Show greeting."],
       "expectedResults": ["The status message reads Hello, Ada!."],
-      "automationStatus": "example"
+      "automation": {
+        "kind": "ui-greeting",
+        "name": "Ada",
+        "expectedText": "Hello, Ada!"
+      }
     },
     {
       "id": "TP-DEMO-002",
-      "title": "The greeting form requires a name",
-      "type": "ui-negative-boundary",
+      "requirementId": "REQ-DEMO-002",
+      "description": "The required name field blocks submitting an empty greeting form.",
       "priority": "P2",
-      "preconditions": ["The demo application is available."],
-      "steps": ["Open the home page.", "Submit the form without a name."],
-      "expectedResults": ["The required input blocks submission."],
-      "automationStatus": "example"
+      "type": "ui-negative",
+      "preconditions": ["The demo application is available at the configured base URL."],
+      "steps": ["Open the home page.", "Submit the form without entering a name."],
+      "expectedResults": ["The name field is required and remains invalid when empty."],
+      "automation": {
+        "kind": "ui-required-field",
+        "fieldName": "Your name"
+      }
     },
     {
       "id": "TP-DEMO-003",
-      "title": "The health endpoint returns a successful status",
-      "type": "api-positive",
+      "requirementId": "REQ-DEMO-003",
+      "description": "The health endpoint returns HTTP 200 and a healthy JSON response.",
       "priority": "P2",
-      "preconditions": ["The demo application is available."],
+      "type": "api-positive",
+      "preconditions": ["The demo application is available at the configured base URL."],
       "steps": ["Send GET /api/health."],
-      "expectedResults": ["HTTP 200 and a JSON status of ok."],
-      "automationStatus": "example"
+      "expectedResults": ["The response status is 200.", "The response JSON is {\"status\":\"ok\"}."],
+      "automation": {
+        "kind": "api-json-get",
+        "path": "/api/health",
+        "expectedStatus": 200,
+        "expectedBody": {
+          "status": "ok"
+        }
+      }
     },
     {
       "id": "TP-DEMO-004",
-      "title": "The demo home page has no automated WCAG 2.2 AA violations",
-      "type": "accessibility",
+      "requirementId": "REQ-DEMO-004",
+      "description": "The home page exposes accessible controls and has no automated WCAG 2.2 AA violations.",
       "priority": "P2",
-      "preconditions": ["The demo application is available."],
-      "steps": ["Scan the home page with axe WCAG 2.2 AA tags."],
-      "expectedResults": ["No automated axe violations are returned."],
-      "automationStatus": "example"
+      "type": "accessibility",
+      "preconditions": ["The demo application is available at the configured base URL."],
+      "steps": ["Open the home page.", "Scan the rendered page using axe WCAG 2.2 AA tags."],
+      "expectedResults": ["The automated axe scan reports no violations."],
+      "automation": {
+        "kind": "accessibility-axe",
+        "path": "/",
+        "tags": ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]
+      }
     }
   ]
 }

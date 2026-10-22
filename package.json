@@ -16,12 +16,26 @@
     "report": "playwright show-report",
     "typecheck": "tsc --noEmit",
     "validate:agents": "node scripts/validate-agents.mjs",
-    "check": "npm run validate:agents && npm run typecheck && npm test"
+    "plan:validate": "node scripts/test-plan.mjs validate",
+    "plan:render": "node scripts/test-plan.mjs render",
+    "plan:approve": "node scripts/test-plan.mjs approve",
+    "tests:generate": "node scripts/test-plan.mjs generate",
+    "test:plans": "node --test scripts/test-plan-workflow.test.mjs",
+    "test:saucedemo": "cross-env PLAYWRIGHT_ENV=saucedemo playwright test tests/saucedemo",
+    "test:allure": "node scripts/clean-allure-results.mjs && cross-env PLAYWRIGHT_ENV=saucedemo playwright test tests/saucedemo",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve allure-results",
+    "check": "npm run validate:agents && npm run plan:validate -- test-plans/demo-app.plan.json && npm run plan:validate -- test-plans/saucedemo-test-plan.json && npm run typecheck && npm run test:plans && npm test"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
     "@playwright/test": "^1.56.0",
     "@types/node": "^24.10.0",
+    "allure-commandline": "^2.46.1",
+    "allure-js-commons": "^3.0.0",
+    "allure-playwright": "^3.0.0",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.6.1",
     "typescript": "^5.9.3",
     "yaml": "^2.8.1"

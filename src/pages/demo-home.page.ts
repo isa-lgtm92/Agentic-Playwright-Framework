@@ -11,8 +11,8 @@ export class DemoHomePage {
     this.submitButton = page.getByRole('button', { name: 'Show greeting' });
   }
 
-  async open(): Promise<void> {
-    await this.page.goto('/');
+  async open(path = '/'): Promise<void> {
+    await this.page.goto(path);
   }
 
   async greet(name: string): Promise<void> {
