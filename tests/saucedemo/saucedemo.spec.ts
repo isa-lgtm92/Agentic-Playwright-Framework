@@ -4,7 +4,6 @@ import {
   description,
   feature,
   severity,
-  step as allureStep,
   story,
   testCaseId,
 } from 'allure-js-commons';
@@ -40,7 +39,7 @@ test(
       description: 'Sign in with the approved standard_user credentials and verify the inventory page.',
     });
 
-    await allureStep('Open login page and verify the observed login controls', async () => {
+    await test.step('Open login page and verify the observed login controls', async () => {
       await sauceDemo.open();
 
       await expect(sauceDemo.loginForm).toBeVisible();
@@ -52,7 +51,7 @@ test(
       await expect(sauceDemo.loginButton).toBeVisible();
     });
 
-    await allureStep('Sign in and verify the inventory', async () => {
+    await test.step('Sign in and verify the inventory', async () => {
       await sauceDemo.signIn(standardUser, demoPassword);
 
       await expect(page).toHaveURL(/\/inventory\.html$/);
@@ -74,12 +73,12 @@ test(
       description: 'Reject invalid credentials and display the approved mismatch alert.',
     });
 
-    await allureStep('Submit invalid credentials', async () => {
+    await test.step('Submit invalid credentials', async () => {
       await sauceDemo.open();
       await sauceDemo.signIn('invalid_user', 'wrong_password');
     });
 
-    await allureStep('Verify the observed invalid-credentials alert', async () => {
+    await test.step('Verify the observed invalid-credentials alert', async () => {
       await expect(sauceDemo.loginAlert).toHaveText(
         'Epic sadface: Username and password do not match any user in this service.',
       );
@@ -99,12 +98,12 @@ test(
       description: 'Reject the locked-out public demo account and display its observed alert.',
     });
 
-    await allureStep('Submit locked-out account credentials', async () => {
+    await test.step('Submit locked-out account credentials', async () => {
       await sauceDemo.open();
       await sauceDemo.signIn('locked_out_user', demoPassword);
     });
 
-    await allureStep('Verify the locked-out alert', async () => {
+    await test.step('Verify the locked-out alert', async () => {
       await expect(sauceDemo.loginAlert).toHaveText('Epic sadface: Sorry, this user has been locked out.');
     });
   },
@@ -122,7 +121,7 @@ test(
       description: 'Add the Backpack and verify its inventory action, cart badge, and cart contents.',
     });
 
-    await allureStep('Sign in and add the Backpack', async () => {
+    await test.step('Sign in and add the Backpack', async () => {
       await sauceDemo.open();
       await sauceDemo.signIn(standardUser, demoPassword);
 
@@ -133,7 +132,7 @@ test(
       await expect(sauceDemo.cartBadge).toHaveText('1');
     });
 
-    await allureStep('Verify the Backpack in the cart', async () => {
+    await test.step('Verify the Backpack in the cart', async () => {
       await sauceDemo.openCart();
 
       await expect(page.getByText('Your Cart', { exact: true })).toBeVisible();
@@ -156,7 +155,7 @@ test(
       description: 'Complete checkout for the Backpack and verify the observed order confirmation.',
     });
 
-    await allureStep('Sign in and prepare an independent Backpack order', async () => {
+    await test.step('Sign in and prepare an independent Backpack order', async () => {
       await sauceDemo.open();
       await sauceDemo.signIn(standardUser, demoPassword);
       await expect(page.getByRole('button', { name: 'Cart, empty' })).toBeVisible();
@@ -167,7 +166,7 @@ test(
       await expect(sauceDemo.cartItemQuantity).toHaveText('1');
     });
 
-    await allureStep('Enter checkout information and review the order', async () => {
+    await test.step('Enter checkout information and review the order', async () => {
       await sauceDemo.beginCheckout();
 
       await expect(page.getByText('Checkout: Your Information', { exact: true })).toBeVisible();
@@ -178,7 +177,7 @@ test(
       await expect(page.getByText('Total: $32.39', { exact: true })).toBeVisible();
     });
 
-    await allureStep('Finish checkout and verify the order confirmation', async () => {
+    await test.step('Finish checkout and verify the order confirmation', async () => {
       await sauceDemo.finishButton.click();
 
       await expect(page).toHaveURL(/\/checkout-complete\.html$/);

@@ -22,9 +22,10 @@ You generate maintainable Playwright TypeScript automation for this framework fr
 3. Map scenarios to UI, API, accessibility, or combined tests. Include meaningful positive, negative, boundary, and edge cases that are explicitly approved in the plan.
 4. Run `npm run tests:generate -- <plan.json> --inspection <evidence.json>`. The generator validates approval hashes and checks selector/API expectations against the inspection evidence. Prefer accessible `getByRole`, `getByLabel`, and stable `getByTestId` locators. Use API request fixtures for API checks. Reuse existing fixtures and page objects; keep page objects focused on reusable user actions rather than assertions or test orchestration.
 5. Use existing fixtures and environment configuration. Assert observable outcomes and relevant response status/body, not implementation details.
-6. Never use hardcoded sleeps, arbitrary retry loops, brittle selectors, shared mutable test state, or credentials committed to source.
-7. Run type checking and the generated test file. Report exact commands and results; do not claim success when the application/browser cannot be run.
-8. Ask the code reviewer to review generated tests when that agent is available. Return any review blockers for resolution.
+6. Structure meaningful UI actions and assertions with Playwright's native `test.step('step description', async () => { ... })` inside each test. Do not use custom step wrappers (including `allureStep()`); native Playwright steps appear in both Playwright HTML and Allure reports.
+7. Never use hardcoded sleeps, arbitrary retry loops, brittle selectors, shared mutable test state, or credentials committed to source.
+8. Run type checking and the generated test file. Report exact commands and results; do not claim success when the application/browser cannot be run.
+9. Ask the code reviewer to review generated tests when that agent is available. Return any review blockers for resolution.
 
 ## Constraints
 
